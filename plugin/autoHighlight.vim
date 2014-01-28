@@ -1,5 +1,5 @@
 "--------------------------------------------------------------------------------
-"     File Name           :     smartRename.vim
+"     File Name           :     autoHighlight.vim
 "     Created By          :     FuDesign2008<FuDesign2008@163.com>
 "     Creation Date       :     [2014-01-28 12:24]
 "     Last Modified       :     [2014-01-28 15:22]
@@ -25,14 +25,20 @@ endif
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
 "
-function! s:AutoHighlightEnable()
+"@param {Boolean} showMsg
+function! s:AutoHighlightEnable(showMsg)
     augroup auto_highlight
       au!
+      setl hls
       au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
     augroup end
-    setl updatetime=600
-    echo 'Highlight current word: ON'
+    setl updatetime=500
+    "set hls
+    if a:showMsg
+        echomsg 'Highlight current word: ON'
+    endif
 endfunction
+
 
 function! s:AutoHighlightDisable()
     let @/ = ''
@@ -48,12 +54,12 @@ function! s:AutoHighlightToggle()
   if exists('#auto_highlight')
       call s:AutoHighlightDisable()
   else
-      call s:AutoHighlightEnable()
+      call s:AutoHighlightEnable(1)
   endif
 endfunction
 
 if g:auto_highlight_enable
-    autocmd BufEnter call s:AutoHighlightEnable()
+    autocmd BufNewFile,BufEnter * call s:AutoHighlightEnable(0)
 endif
 
 command! -nargs=0 AutoHi call s:AutoHighlightToggle()
