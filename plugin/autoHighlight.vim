@@ -59,7 +59,7 @@ function! s:AutoHighlightToggle()
 endfunction
 
 if g:auto_highlight_enable
-    autocmd BufNewFile,BufEnter * call s:AutoHighlightEnable(0)
+    autocmd BufNewFile,BufRead * call s:AutoHighlightEnable(0)
 endif
 
 command! -nargs=0 AutoHi call s:AutoHighlightToggle()
