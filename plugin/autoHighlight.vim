@@ -21,12 +21,22 @@ if !exists('g:auto_highlight_enable')
     let g:auto_highlight_enable = 1
 endif
 
+" status
+" 1 -> undefined
+" 2 -> disable/enable by user calling `:AutoHi` command
+"
+let s:auto_highlight_status = 1
 
 " Highlight all instances of word under cursor, when idle.
 " Useful when studying strange source code.
-"
+"@param {Boolean} force
 "@param {Boolean} showMsg
-function! s:AutoHighlightEnable(showMsg)
+function! s:AutoHighlightEnable(force, showMsg)
+
+    if g:auto_highlight_status == 2 && !force
+        return
+    endif
+
     augroup auto_highlight
       au!
       setl hls
@@ -54,12 +64,12 @@ function! s:AutoHighlightToggle()
   if exists('#auto_highlight')
       call s:AutoHighlightDisable()
   else
-      call s:AutoHighlightEnable(1)
+      call s:AutoHighlightEnable(1, 1)
   endif
 endfunction
 
 if g:auto_highlight_enable
-    autocmd BufNewFile,BufRead * call s:AutoHighlightEnable(0)
+    autocmd BufNewFile,BufRead * call s:AutoHighlightEnable(0, 0)
 endif
 
 command! -nargs=0 AutoHi call s:AutoHighlightToggle()
