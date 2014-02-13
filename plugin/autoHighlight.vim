@@ -33,7 +33,7 @@ let s:auto_highlight_status = 1
 "@param {Boolean} showMsg
 function! s:AutoHighlightEnable(force, showMsg)
 
-    if g:auto_highlight_status == 2 && !force
+    if s:auto_highlight_status == 2 && !a:force
         return
     endif
 
@@ -66,6 +66,7 @@ function! s:AutoHighlightToggle()
   else
       call s:AutoHighlightEnable(1, 1)
   endif
+  let s:auto_highlight_status = 2
 endfunction
 
 if g:auto_highlight_enable
